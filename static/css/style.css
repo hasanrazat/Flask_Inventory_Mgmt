@@ -1,0 +1,217 @@
+/* Root Variables */
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --card-bg: #f5f5f5;
+    --sidebar-bg: #1e1e1e;
+    --sidebar-text: #ffffff;
+    --btn-primary: #007bff;
+    --btn-primary-hover: #0056b3;
+    --btn-danger: #e74c3c;
+    --btn-danger-hover: #c0392b;
+}
+
+.dark-mode {
+    --bg-color: #181818;
+    --text-color: #ffffff;
+    --card-bg: #282828;
+    --sidebar-bg: #121212;
+    --sidebar-text: #cccccc;
+}
+
+/* Global Styles */
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Arial', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+/* Sidebar Styles */
+.sidebar {
+    width: 200px;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sidebar h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    padding: 15px;
+    text-align: center;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: var(--sidebar-text);
+    font-size: 16px;
+    display: block;
+    padding: 10px;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.sidebar ul li a:hover {
+    background-color: var(--btn-primary);
+}
+
+/* Main Content */
+.main-content {
+    margin-left: 260px;
+    padding: 20px;
+    width: calc(100% - 260px);
+}
+
+/* Top Bar */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.top-bar h2 {
+    margin: 0;
+}
+
+/* Dashboard Cards */
+.card {
+    background-color: var(--card-bg);
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+}
+
+/* Buttons */
+button {
+    padding: 10px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: var(--btn-primary);
+    color: white;
+    font-size: 16px;
+    transition: 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--btn-primary-hover);
+}
+
+.btn-danger {
+    background-color: var(--btn-danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: var(--btn-danger-hover);
+}
+
+/* Dark Mode Toggle */
+.toggle-btn {
+    background-color: transparent;
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+    padding: 8px 12px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.toggle-btn:hover {
+    background-color: var(--text-color);
+    color: var(--bg-color);
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    width: 96.2%;
+    height: 300px;
+}
+
+/* Table Container */
+.table-container {
+    overflow-x: auto;
+}
+
+/* Responsive Button */
+@media (max-width: 768px) {
+    .btn-primary {
+        width: 100%;
+        font-size: 14px;
+        padding: 20px;
+    }
+    
+    .chart-container {
+        height: 250px;
+    }
+}
+
+/* Ensure canvas is fully responsive */
+canvas {
+    max-width: 100%;
+    height: auto !important;
+}
+
+/* Responsive Sidebar and Content */
+@media (max-width: 900px) {
+    .sidebar {
+        width: 200px;
+    }
+    .main-content {
+        margin-left: 210px;
+        width: calc(100% - 210px);
+    }
+}
+
+@media (max-width: 600px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+
+/* Styling for the Logout Button */
+.btn-logout {
+    background-color: var(--btn-danger) !important; /* Ensures the background is red */
+    color: white !important;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 5px;
+    display: block;
+    margin-top: 20px; /* Adds separation from other buttons */
+    text-decoration: none;
+    font-weight: bold;
+    border: none;
+    transition: background-color 0.3s ease;
+}
+
+.btn-logout:hover {
+    background-color: var(--btn-danger-hover) !important; /* Darker red on hover */
+}

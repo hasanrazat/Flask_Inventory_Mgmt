@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    background-color: #f3f3f3;
+    color: black;
+    user-select: none;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Centered Login Box */
+.canvas-container {
+    width: 450px;  /* Increased size */
+    max-width: 95%;
+    background: white;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+
+.canvas-container h2 {
+    margin-bottom: 25px;
+    font-weight: 700;
+}
+
+/* Form Styling */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+form label {
+    font-weight: 600;
+    text-align: left;
+}
+
+form input {
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    background: #f9f9f9;
+}
+
+form input:focus {
+    border-color: black;
+    outline: none;
+}
+
+/* Button Styling */
+.btn-primary {
+    padding: 12px;
+    background: black;
+    color: white;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: white;
+    color: black;
+    border: 1px solid black;
+}
+
+/* Dark Mode */
+.dark-mode {
+    background-color: #181818;
+    color: white;
+}
+
+.dark-mode .canvas-container {
+    background-color: #282828;
+    color: white;
+    box-shadow: 0px 6px 12px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode form input {
+    background-color: #333;
+    color: white;
+    border: 1px solid #555;
+}
+
+.dark-mode .btn-primary {
+    background: white;
+    color: black;
+}
+
+.dark-mode .btn-primary:hover {
+    background: #ddd;
+    color: black;
+}
+
+/* Dark Mode Toggle Button */
+.toggle-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 8px 15px;
+    background: black;
+    color: white;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: white;
+    color: black;
+}

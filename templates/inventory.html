@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/inventory.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('owner_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('personal_info') }}">Personal Info</a></li>
+                <li><a href="{{ url_for('sales') }}">Sales</a></li>
+                <li><a href="{{ url_for('expenses') }}">Expenses</a></li>
+                <li><a href="{{ url_for('records') }}">Records</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="top-bar">
+                <h2>Inventory Management</h2>
+                <button class="btn-primary" id="openOutInventory">Out Inventory</button>
+        </div>
+
+            <div class="card">
+             <h3>Add New Inventory Item</h3>
+                <form action="{{ url_for('add_inventory') }}" method="POST">
+                    <label for="item_name">Item Name:</label>
+                    <input type="text" id="item_name" name="item_name" required>
+
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" required min="0">
+
+                    <label for="category">Category:</label>
+                    <input type="text" id="category" name="category" required>
+
+                    <button type="submit" class="btn-primary">Add Item</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Inventory List</h3>
+                <table>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                    {% for item in inventory %}
+                    <tr>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        <td>{{ item[3] }}</td>
+                        <td>{% if item[2] > 0 %}In Stock{% else %}Out of Stock{% endif %}</td>
+                        <td>
+                            <button class="btn-primary" onclick="openEditForm('{{ item[0] }}', '{{ item[1] }}', '{{ item[2] }}', '{{ item[3] }}')">Edit</button>
+                            <form action="{{ url_for('delete_inventory', item_id=item[0]) }}" method="POST" style="display:inline;">
+                                <button type="submit" class="btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Edit Modal -->
+            <div id="editModal" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Edit Inventory Item</h3>
+                    <form id="editForm" method="POST">
+                        <label for="edit_item_name">Item Name:</label>
+                        <input type="text" id="edit_item_name" name="item_name" required>
+
+                        <label for="edit_quantity">Quantity:</label>
+                        <input type="number" id="edit_quantity" name="quantity" min="0" required>
+
+                        <label for="edit_category">Category:</label>
+                        <input type="text" id="edit_category" name="category" required>
+
+                        <div class="button-group">
+                            <button type="submit" class="btn-primary">Update</button>
+                            <button type="button" class="btn-secondary" onclick="closeEditModal()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Export Inventory Data -->
+            <div class="card">
+                <h3>Export Inventory Data</h3>
+                <a href="{{ url_for('export_inventory_csv') }}"><button class="btn-primary">Export CSV</button></a>
+            </div>
+
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+
+        <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+        <script>
+            document.getElementById("openOutInventory").onclick = function () {
+                window.open("{{ url_for('out_inventory') }}", "Out Inventory", "width=600,height=700");
+            };
+
+            function openEditForm(id, name, quantity, category) {
+                const modal = document.getElementById('editModal');
+                const form = document.getElementById('editForm');
+                
+                // Set form values
+                document.getElementById('edit_item_name').value = name;
+                document.getElementById('edit_quantity').value = quantity;
+                document.getElementById('edit_category').value = category;
+                
+                // Set form action URL
+                form.action = `/update_inventory/${id}`;
+                
+                // Show modal
+                modal.style.display = 'block';
+                
+                // Debug log
+                console.log('Opening edit form:', { id, name, quantity, category });
+            }
+
+            function closeEditModal() {
+                document.getElementById('editModal').style.display = 'none';
+            }
+
+            // Close modal when clicking outside
+            window.onclick = function(event) {
+                const modal = document.getElementById('editModal');
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+        </script>
+</body>
+</html>

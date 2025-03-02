@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inventory Management System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to the Inventory Management System</h1>
+        <p>Efficiently manage your inventory, sales, and expenses.</p>
+
+        <div class="card">
+            <h3>Get Started</h3>
+            <a href="{{ url_for('login') }}"><button class="btn-primary">Login</button></a>
+        </div>
+
+        <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

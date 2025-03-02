@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Info - Inventory System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/personal_info.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('owner_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+                <li><a href="{{ url_for('sales') }}">Sales</a></li>
+                <li><a href="{{ url_for('expenses') }}">Expenses</a></li>
+                <li><a href="{{ url_for('records') }}">Records</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Personal Information</h2>
+
+            <div class="card">
+                <h3>Owner Details</h3>
+                <p><strong>Name:</strong> {{ owner.name }}</p>
+                <p><strong>Username:</strong> {{ owner.username }}</p>
+            </div>
+
+            <div class="card">
+                <h3>Change Password</h3>
+                <form action="{{ url_for('change_password') }}" method="POST">
+                    <label for="current_password">Current Password:</label>
+                    <input type="password" id="current_password" name="current_password" required>
+
+                    <label for="new_password">New Password:</label>
+                    <input type="password" id="new_password" name="new_password" required>
+                    <label for="new_password">Confirm Password:</label>
+                    <input type="password" name="confirm_password" required>
+
+
+                    <button type="submit" class="btn-primary">Update Password</button>
+                </form>
+            </div>
+
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

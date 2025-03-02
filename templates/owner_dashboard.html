@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Owner Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='myfont/css/all.min.css') }}">
+    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+</head>
+<body>
+    <div class="warpper">
+        <!-- Sidebar -->
+        <div class="sidbar">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='images/icon.png') }}" alt="Logo">
+                <h2><b>Perfume Manager</b><span class="danger"></span></h2>
+            </div>
+            <ul class="dropdown">
+                <li><a href="{{ url_for('owner_dashboard') }}"><i class="fas fa-qrcode"></i> Home</a></li>
+                <li><a href="{{ url_for('personal_info') }}"><i class="fas fa-user"></i> Personal Info</a></li>
+                <li><a href="{{ url_for('inventory') }}"><i class="fas fa-cubes"></i> Inventory</a></li>
+                <li><a href="{{ url_for('sales') }}"><i class="fas fa-chart-line"></i> Sales</a></li>
+                <li><a href="{{ url_for('expenses') }}"><i class="fas fa-money-bill"></i> Expenses</a></li>
+                <li><a href="{{ url_for('records') }}"><i class="fas fa-file-alt"></i> Records</a></li>
+                <li><a href="{{ url_for('logout') }}"><i class="fa fa-sign-out"></i> Logout</a></li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <main>
+            <h1 class="top">DASHBOARD</h1>
+            <div class="insights" style="margin-top: 40px;">
+                <!-- Total Item Card -->
+                <div class="item">
+                    <span><i class="fas fa-cubes"></i></span>
+                    <div class="middle">
+                        <div class="left">
+                            <h3>Total Inventory Products</h3>
+                            <h1>{{ total_items }}</h1>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sales Chart -->
+                <div class="card chart-card">
+                    <h3>Sales Overview</h3>
+                    <div class="chart-container">
+                        <canvas id="salesChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Inventory Overview -->
+                <div class="card table-card">
+                    <h3>Inventory Overview</h3>
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Quantity</th>
+                                    <th>Category</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for item in inventory %}
+                                <tr>
+                                    <td>{{ item[1] }}</td>
+                                    <td>{{ item[2] }}</td>
+                                    <td>{{ item[3] }}</td>
+                                    <td>{{ item[5] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Employee Overview (Placed Further Below Inventory) -->
+            <div class="card table-card" style="margin-top: 40px;"> <!-- Added margin for spacing -->
+                <h3>Employee Overview</h3>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee Name</th>
+                                <th>Assigned Inventory</th>
+                                <th>Expenses</th>
+                                <th>Sales</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for employee in employees %}
+                            <tr>
+                                <td>{{ employee.name }}</td>
+                                <td>{{ employee.assigned_inventory }}</td>
+                                <td>Rs{{ employee.expense }}</td>
+                                <td>Rs{{ employee.sales }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+            <!-- Hamburger Menu -->
+            <div class="hamburger-container">
+                <button id="burger-btn" class="hamburger-menu">☰</button>
+                <!-- Dropdown Menu -->
+                <div id="dropdown-menu" class="dropdown-menu">
+                    <button class="btn-primary" id="openPopup">Register Employee</button>
+                    <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialize Sales Chart
+        var ctx = document.getElementById('salesChart').getContext('2d');
+        var salesChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: {{ labels|tojson }},
+                datasets: [{
+                    label: 'Sales Trend',
+                    data: {{ data|tojson }},
+                    borderColor: 'blue',
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false
+            }
+        });
+
+        // Toggle Dropdown Menu
+        function toggleDropdown() {
+            var menu = document.getElementById("dropdown-menu");
+            menu.style.display = (menu.style.display === "flex") ? "none" : "flex";
+        }
+
+        document.getElementById("burger-btn").addEventListener("click", function () {
+            toggleDropdown();
+        });
+
+        // Open Register Employee Popup
+        document.getElementById("openPopup").addEventListener("click", function () {
+            window.open("{{ url_for('register_employee_popup') }}", "Register Employee", "width=500,height=600");
+        });
+
+        // Dark Mode Toggle
+        const toggleButton = document.getElementById("dark-mode-toggle");
+        
+        toggleButton.addEventListener("click", function() {
+            document.body.classList.toggle("dark-mode");
+            localStorage.setItem("dark-mode", document.body.classList.contains("dark-mode"));
+        });
+
+        // Check localStorage for Dark Mode Preference
+        if (localStorage.getItem("dark-mode") === "true") {
+            document.body.classList.add("dark-mode");
+        }
+    });
+</script>
+
+</body>
+</html>

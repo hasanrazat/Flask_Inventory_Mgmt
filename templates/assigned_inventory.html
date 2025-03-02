@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assigned Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/assigned_inventory.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('employee_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('employee_info') }}">Employee Info</a></li>
+                <li><a href="{{ url_for('my_sales') }}">My Sales</a></li>
+                <li><a href="{{ url_for('my_expenses') }}">My Expenses</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Assigned Inventory</h2>
+
+            <div class="card">
+                <h3>My Assigned Inventory</h3>
+                <table>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Assigned Date</th>
+                    </tr>
+                    {% for item in inventory %}
+                    <tr>
+                        <td>{{ item[0] }}</td>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        <td>{{ item[3] }}</td>
+                        <td>{{ item[4] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

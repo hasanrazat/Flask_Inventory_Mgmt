@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Inventory System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Login.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Login</h2>
+        <div class="card">
+            <form action="{{ url_for('login') }}" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <button type="submit" class="btn-primary">Login</button>
+            </form>
+        </div>
+
+        <!-- Signup Button for Owner -->
+        <div class="card">
+            <h3>New Owner?</h3>
+            <a href="{{ url_for('owner_signup') }}"><button class="btn-primary">Sign Up</button></a>
+        </div>
+
+        <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+    </div>
+    
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Sales</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/my_sales.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('employee_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('employee_info') }}">Employee Info</a></li>
+                <li><a href="{{ url_for('assigned_inventory') }}">Assigned Inventory</a></li>
+                <li><a href="{{ url_for('my_expenses') }}">My Expenses</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>My Sales</h2>
+
+            <!-- Sales Form -->
+            <div class="card">
+                <h3>Add Sale</h3>
+                <form action="{{ url_for('add_sale') }}" method="POST">
+                    <label for="item">Item:</label>
+                    <input type="text" id="item" name="item" required>
+
+                    <label for="quantity">Quantity:</label>
+                    <input type="number" id="quantity" name="quantity" required>
+
+                    <label for="amount">Amount:</label>
+                    <input type="number" id="amount" name="amount" step="0.01" required>
+
+                    <label for="date">Date:</label>
+                    <input type="date" id="date" name="date" required>
+
+                    <button type="submit" class="submit-btn">Add Sale</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3>Sales Records</h3>
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale[2] }}</td>
+                        <td>{{ sale[3] }}</td>
+                        <td>Rs{{ sale[4] }}</td>
+                        <td>{{ sale[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

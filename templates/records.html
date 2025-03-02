@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Records - Inventory System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/records.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('owner_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+                <li><a href="{{ url_for('sales') }}">Sales</a></li>
+                <li><a href="{{ url_for('expenses') }}">Expenses</a></li>
+                <li><a href="{{ url_for('records') }}">Records</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Historical Records</h2>
+
+            <!-- Sales Records Section -->
+            <div class="card">
+                <h3>Sales Records</h3>
+                <table>
+                    <tr>
+                        <th>Item Sold</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale[2] }}</td>
+                        <td>{{ sale[3] }}</td>
+                        <td>Rs{{ sale[4] }}</td>
+                        <td>{{ sale[6] if sale[6] else 'Owner' }}</td>
+                        <td>{{ sale[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Expense Records Section -->
+            <div class="card">
+                <h3>Expense Records</h3>
+                <table>
+                    <tr>
+                        <th>Expense Type</th>
+                        <th>Description</th>
+                        <th>Amount</th>
+                        <th>Employee</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for expense in expenses %}
+                    <tr>
+                        <td>{{ expense[2] }}</td>
+                        <td>{{ expense[5] }}</td>
+                        <td>Rs{{ expense[3] }}</td>
+                        <td>{{ expense[6] if expense[6] else 'Owner' }}</td>
+                        <td>{{ expense[4] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Inventory Records -->
+            <div class="card">
+                <h3>Inventory Records</h3>
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Category</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for item in inventory %}
+                    <tr>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        <td>{{ item[3] }}</td>
+                        <td>{{ item[5] }}</td>
+                        <td>{{ item[6] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Export Records -->
+            <div class="card">
+                <h3>Export Records</h3>
+                <a href="{{ url_for('export_sales_csv') }}"><button class="btn-primary">Export Sales (CSV)</button></a>
+                <a href="{{ url_for('export_expenses_csv') }}"><button class="btn-primary">Export Expenses (CSV)</button></a>
+                <a href="{{ url_for('export_inventory_csv') }}"><button class="btn-primary">Export Inventory (CSV)</button></a>
+            </div>
+
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

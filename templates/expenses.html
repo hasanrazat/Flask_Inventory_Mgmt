@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/expense.css') }}">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <h3>Dashboard</h3>
+            <ul>
+                <li><a href="{{ url_for('owner_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('personal_info') }}">Personal Info</a></li>
+                <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+                <li><a href="{{ url_for('sales') }}">Sales</a></li>
+                <li><a href="{{ url_for('records') }}">Records</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
+            </ul>
+        </nav>
+        <!-- Main Content -->
+    <div class="main-content">
+        <h2>Expense Management</h2>
+
+        <div class="card">
+            <h3>Record an Expense</h3>
+            <form action="{{ url_for('add_owner_expense') }}" method="POST">
+                <label for="expense_type">Expense Type:</label>
+                <select id="expense_type" name="expense_type" required>
+                    <option value="General">General</option>
+                    <option value="Work">Work</option>
+                </select>
+
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" required></textarea>
+
+                <label for="amount">Amount (Rs):</label>
+                <input type="number" id="amount" name="amount" required>
+
+                <button type="submit" class="btn-primary">Record Expense</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Expense Records</h3>
+            <table>
+                <tr>
+                    <th>Expense Type</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Employee</th>
+                    <th>Date</th>
+                </tr>
+                {% for expense in expenses %}
+                <tr>
+                    <td>{{ expense[2] }}</td>
+                    <td>{{ expense[5] }}</td>
+                    <td>Rs{{ expense[3] }}</td>
+                    <td>{{ expense[6] if expense[6] else 'Owner' }}</td>
+                    <td>{{ expense[4] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Export Expenses Data -->
+        <div class="card">
+            <h3>Export Expenses Data</h3>
+            <a href="{{ url_for('export_expenses_csv') }}"><button class="btn-primary">Export CSV</button></a>
+        </div>
+
+        <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

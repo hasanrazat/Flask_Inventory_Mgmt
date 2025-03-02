@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Out Inventory</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/out_inventory1.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Out Inventory</h2>
+
+        <!-- Available Inventory Table -->
+        <div class="card">
+            <h3>Available Inventory</h3>
+            <table>
+                <tr>
+                    <th>Item Name</th>
+                    <th>Quantity</th>
+                    <th>Category</th>
+                </tr>
+                {% for item in inventory %}
+                <tr>
+                    <td>{{ item[1] }}</td>
+                    <td>{{ item[2] }}</td>
+                    <td>{{ item[3] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <!-- Assign Inventory Form -->
+        <div class="card">
+            <h3>Assign Inventory to Employee</h3>
+            <form action="{{ url_for('assign_inventory') }}" method="POST">
+                <!-- Employee Selection -->
+                <label for="employee">Select Employee:</label>
+                <select id="employee" name="employee_id" required>
+                    {% if employees %}
+                        {% for employee in employees %}
+                        <option value="{{ employee[0] }}">{{ employee[1] }}</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="">No employees available</option>
+                    {% endif %}
+                </select>
+
+                <!-- Item Selection -->
+                <label for="item">Select Item:</label>
+                <select id="item" name="item_id" required>
+                    {% if inventory %}
+                        {% for item in inventory %}
+                        <option value="{{ item[0] }}">{{ item[1] }} ({{ item[2] }} available)</option>
+                        {% endfor %}
+                    {% else %}
+                        <option value="">No items available</option>
+                    {% endif %}
+                </select>
+
+                <!-- Quantity Input -->
+                <label for="quantity">Quantity to Assign:</label>
+                <input type="number" id="quantity" name="quantity" min="1" required>
+
+                <button type="submit" class="btn-primary">Assign Inventory</button>
+            </form>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+    </div>
+
+    <script>
+        // Add form validation
+        document.querySelector('form').onsubmit = function(e) {
+            const quantity = document.getElementById('quantity').value;
+            if (quantity <= 0) {
+                e.preventDefault();
+                alert('Quantity must be greater than 0');
+                return false;
+            }
+            return true;
+        };
+    </script>
+</body>
+</html>

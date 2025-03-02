@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <!-- Sidebar Navigation -->
+        <nav class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="{{ url_for('employee_dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('my_sales') }}">My Sales</a></li>
+                <li><a href="{{ url_for('assigned_inventory') }}">Assigned Inventory</a></li>
+                <li><a href="{{ url_for('my_expenses') }}">My Expenses</a></li>
+                <!-- Add a specific class to the logout button -->
+                <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+            </ul>
+        </nav>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <h2>Employee Dashboard</h2>
+
+            <!-- My Sales Section -->
+            <div class="card" id="sales">
+                <h3>My Sales</h3>
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale[2] }}</td>
+                        <td>{{ sale[3] }}</td>
+                        <td>Rs{{ sale[4] }}</td>
+                        <td>{{ sale[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Inventory Assigned Section -->
+            <div class="card" id="inventory">
+                <h3>Inventory Assigned</h3>
+                <table>
+                    <tr>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for item in inventory %}
+                    <tr>
+                        <td>{{ item[1] }}</td>
+                        <td>{{ item[2] }}</td>
+                        <td>{{ item[5] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+            </div>
+
+            <!-- Dark Mode Toggle -->
+            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

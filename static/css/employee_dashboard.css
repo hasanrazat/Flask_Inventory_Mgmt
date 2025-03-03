@@ -1,0 +1,257 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600;700;800&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    appearance: none;
+    border: 0;
+    text-decoration: none;
+    list-style: none;
+    box-sizing: border-box;
+}
+
+body {
+    width: 100%;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    background-color: #f3f3f3;
+    color: black;
+    user-select: none;
+    overflow-x: hidden;
+}
+
+/* Sidebar */
+.warpper {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+}
+
+.warpper .sidbar {
+    width: 250px;
+    background: black;
+    padding: 40px 0;
+    color: white;
+    flex-shrink: 0;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidbar .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.sidbar .logo img {
+    width: 35px;
+    height: auto;
+    max-width: 100%;
+}
+
+.sidbar ul li a {
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    padding: 10px;
+    transition: background 0.3s ease;
+}
+
+.sidbar ul li a:hover {
+    background: white;
+    color: black;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+    background: #f3f3f3;
+    overflow-y: auto;
+}
+
+/* Dashboard Cards */
+.insights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 100%;
+}
+
+/* Tables */
+.table-container {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+/* Footer */
+.footer {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+/* Toggle Button */
+.toggle-btn {
+    padding: 10px 15px;
+    background: black;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.toggle-btn:hover {
+    background: white;
+    color: black;
+}
+
+/* Hamburger Menu */
+.hamburger-container {
+    position: fixed;
+    top: 25px;
+    right: 50px;
+    font-size: 25px;
+    z-index: 1000;
+}
+
+.hamburger-menu {
+    background: transparent;
+    color: rgb(12, 12, 12);
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown Menu */
+.dropdown-menu {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 50px;
+    right: 10px;
+    background: #121212;
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    width: max-content;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.dropdown-menu button {
+    background: black;
+    color: white;
+    border: none;
+    padding: 8px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: 0.3s;
+    width: 100%;
+}
+
+.dropdown-menu button:hover {
+    background: white;
+    color: black;
+}
+
+/* DARK MODE */
+.dark-mode {
+    background-color: #181818;
+    color: white;
+}
+
+.dark-mode .warpper {
+    background-color: #121212;
+}
+
+.dark-mode .sidbar {
+    background-color: #121212;
+    color: #cccccc;
+}
+
+.dark-mode .sidbar ul li a {
+    color: #cccccc;
+}
+
+.dark-mode .sidbar ul li a:hover {
+    background-color: #333;
+    color: white;
+}
+
+.dark-mode main {
+    background-color: #181818;
+    color: white;
+}
+
+.dark-mode .card {
+    background-color: #282828;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.1);
+}
+
+.dark-mode .table-container table {
+    background-color: #333;
+    color: white;
+    border-color: white;
+}
+
+.dark-mode th, 
+.dark-mode td {
+    border: 1px solid white;
+}
+
+.dark-mode .toggle-btn {
+    background: white;
+    color: black;
+}
+
+/* Dark Mode for Hamburger Menu */
+.dark-mode .hamburger-menu {
+    background: #333;
+    color: white;
+    border-radius: 5px;
+    padding: 8px 12px;
+    transition: background 0.3s ease;
+}
+
+.dark-mode .hamburger-menu:hover {
+    background: white;
+    color: black;
+}
+
+/* Dark Mode for Dropdown Menu */
+.dark-mode .dropdown-menu {
+    background: #222;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(255, 255, 255, 0.2);
+}
+
+.dark-mode .dropdown-menu button {
+    background: #444;
+    color: white;
+    border: 1px solid white;
+}
+
+.dark-mode .dropdown-menu button:hover {
+    background: white;
+    color: black;
+}

@@ -26,7 +26,7 @@
 
         <div class="card">
             <h3>Record a Sale</h3>
-            <form action="{{ url_for('add_sale') }}" method="POST">
+            <form action="{{ url_for('add_owner_sale') }}" method="POST">
                 <label for="item">Item Sold:</label>
                 <input type="text" id="item" name="item" required>
 
@@ -36,6 +36,9 @@
                 <label for="amount">Total Amount (Rs):</label>
                 <input type="number" id="amount" name="amount" required>
 
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description">
+
                 <button type="submit" class="btn-primary">Record Sale</button>
             </form>
         </div>
@@ -43,22 +46,28 @@
         <div class="card">
             <h3>Sales Records</h3>
             <table>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Amount</th>
-                    <th>Employee</th>
-                    <th>Date</th>
-                </tr>
-                {% for sale in sales %}
-                <tr>
-                    <td>{{ sale[2] }}</td>
-                    <td>{{ sale[3] }}</td>
-                    <td>Rs{{ sale[4] }}</td>
-                    <td>{{ sale[6] }}</td>
-                    <td>{{ sale[5] }}</td>
-                </tr>
-                {% endfor %}
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Employee Name</th>
+                        <th>Item Sold</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                    <tr>
+                        <td>{{ sale.id }}</td>
+                        <td>{{ sale.name }}</td>
+                        <td>{{ sale.item_sold }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>{{ sale.amount }}</td>
+                        <td>{{ sale.date }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
             </table>
         </div>
 

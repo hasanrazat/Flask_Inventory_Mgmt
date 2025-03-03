@@ -299,61 +299,50 @@ def employee_dashboard():
     with get_db_connection() as conn:
         cursor = conn.cursor()
 
-        # Fetch assigned inventory for the logged-in employee
-        cursor.execute("SELECT id, item_name, quantity FROM inventory WHERE assigned_to = ?", (user_id,))
-        inventory = cursor.fetchall()
+        # Fetch assigned inventory with more details
+        cursor.execute("""
+            SELECT ai.item_name, ai.quantity, ai.date,
+                   i.category, i.status
+            FROM assigned_inventory ai
+            LEFT JOIN inventory i ON ai.item_id = i.id
+            WHERE ai.employee_id = ?
+            ORDER BY ai.date DESC
+        """, (user_id,))
+        assigned_inventory = cursor.fetchall()
 
-        # Fetch logged sales and expenses
-        cursor.execute("SELECT id, date, amount, description FROM sales WHERE employee_id = ?", (user_id,))
-        sales = cursor.fetchall()
+        # Fetch sales with more details
+        cursor.execute("""
+            SELECT id, item_sold, quantity, amount, date, description 
+            FROM sales 
+            WHERE employee_id = ?
+            ORDER BY date DESC
+            LIMIT 5
+        """, (user_id,))
+        recent_sales = cursor.fetchall()
 
-        cursor.execute("SELECT id, date, amount, description FROM expenses WHERE employee_id = ?", (user_id,))
-        expenses = cursor.fetchall()
+        # Calculate total sales amount
+        cursor.execute("""
+            SELECT COALESCE(SUM(amount), 0) as total_sales
+            FROM sales 
+            WHERE employee_id = ?
+        """, (user_id,))
+        total_sales = cursor.fetchone()[0]
 
-        if request.method == "POST":
-            action = request.form.get("action")
-            
-            # Update inventory usage (Issued, Returned, Wasted)
-            if action == "update_inventory":
-                item_id = request.form["item_id"]
-                update_type = request.form["update_type"]
-                quantity = int(request.form["quantity"])
+        # Fetch expenses for summary
+        cursor.execute("""
+            SELECT COALESCE(SUM(amount), 0) as total_expenses
+            FROM expenses 
+            WHERE employee_id = ?
+        """, (user_id,))
+        total_expenses = cursor.fetchone()[0]
 
-                # Adjust inventory quantity based on action
-                if update_type == "Issued":
-                    cursor.execute("UPDATE inventory SET quantity = quantity - ? WHERE id = ? AND assigned_to = ?", 
-                                   (quantity, item_id, user_id))
-                elif update_type == "Returned":
-                    cursor.execute("UPDATE inventory SET quantity = quantity + ? WHERE id = ? AND assigned_to = ?", 
-                                   (quantity, item_id, user_id))
-                elif update_type == "Wasted":
-                    cursor.execute("UPDATE inventory SET quantity = quantity - ? WHERE id = ? AND assigned_to = ?", 
-                                   (quantity, item_id, user_id))
-
-                conn.commit()
-
-            # Log daily sales
-            elif action == "log_sales":
-                amount = request.form["amount"]
-                description = request.form["description"]
-
-                cursor.execute("INSERT INTO sales (employee_id, date, amount, description) VALUES (?, DATE('now'), ?, ?)", 
-                               (user_id, amount, description))
-                conn.commit()
-
-            # Log daily expenses
-            elif action == "log_expenses":
-                amount = request.form["amount"]
-                description = request.form["description"]
-
-                cursor.execute("INSERT INTO expenses (employee_id, date, amount, description) VALUES (?, DATE('now'), ?, ?)", 
-                               (user_id, amount, description))
-                conn.commit()
-                
-
-            return redirect(url_for("employee_dashboard"))
-
-    return render_template("employee_dashboard.html", inventory=inventory, sales=sales, expenses=expenses)
+    return render_template(
+        "employee_dashboard.html",
+        assigned_inventory=assigned_inventory,
+        recent_sales=recent_sales,
+        total_sales=total_sales,
+        total_expenses=total_expenses
+    )
 
 @app.route("/personal_info")
 def personal_info():
@@ -522,7 +511,7 @@ def assign_inventory():
 
 @app.route("/sales", methods=["GET"])
 def sales():
-    if "user_id" not in session:
+    if "user_id" not in session or session["role"] != "Owner":
         return redirect(url_for("login"))
 
     with get_db_connection() as conn:
@@ -554,6 +543,28 @@ def add_sale():
         conn.commit()
 
     return redirect(url_for("my_sales"))  # Redirect to Employee's My Sales Page
+
+@app.route("/add_owner_sale", methods=["POST"])
+def add_owner_sale():
+    if "user_id" not in session or session["role"] != "Owner":
+        return redirect(url_for("login"))
+
+    item = request.form["item"]
+    quantity = request.form["quantity"]
+    amount = request.form["amount"]
+    description = request.form.get("description", "")
+    owner_id = session["user_id"]
+
+    with get_db_connection() as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO sales (employee_id, item_sold, quantity, amount, date, description) VALUES (?, ?, ?, ?, DATE('now'), ?)", 
+            (owner_id, item, quantity, amount, description)
+        )
+        conn.commit()
+
+    flash("Sale recorded successfully!", "success")
+    return redirect(url_for("sales"))
 
 
 @app.route('/expenses', methods=['GET', 'POST'])
@@ -866,7 +877,6 @@ def my_expenses():
         expenses = cursor.fetchall()
 
     return render_template("my_expenses.html", my_expenses=expenses)  # Fix: Passing the correct variable
-
 
 
 

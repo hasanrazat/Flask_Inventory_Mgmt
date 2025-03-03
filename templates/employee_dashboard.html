@@ -3,71 +3,82 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Sales Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sales.css') }}">
 </head>
 <body>
-    <div class="wrapper">
-        <!-- Sidebar Navigation -->
+    <div class="dashboard-container">
+        <!-- Sidebar -->
         <nav class="sidebar">
-            <h2>Menu</h2>
+            <h3>Dashboard</h3>
             <ul>
-                <li><a href="{{ url_for('employee_dashboard') }}">Dashboard</a></li>
-                <li><a href="{{ url_for('my_sales') }}">My Sales</a></li>
-                <li><a href="{{ url_for('assigned_inventory') }}">Assigned Inventory</a></li>
-                <li><a href="{{ url_for('my_expenses') }}">My Expenses</a></li>
-                <!-- Add a specific class to the logout button -->
-                <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+                <li><a href="{{ url_for('owner_dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('personal_info') }}">Personal Info</a></li>
+                <li><a href="{{ url_for('inventory') }}">Inventory</a></li>
+                <li><a href="{{ url_for('expenses') }}">Expenses</a></li>
+                <li><a href="{{ url_for('records') }}">Records</a></li>
+                <li><a href="{{ url_for('logout') }}" class="logout-btn">Logout</a></li>
             </ul>
         </nav>
-
         <!-- Main Content -->
-        <div class="main-content">
-            <h2>Employee Dashboard</h2>
+    <div class="main-content">
+        <h2>Sales Management</h2>
 
-            <!-- My Sales Section -->
-            <div class="card" id="sales">
-                <h3>My Sales</h3>
-                <table>
+        <div class="card">
+            <h3>Record a Sale</h3>
+            <form action="{{ url_for('add_owner_sale') }}" method="POST">
+                <label for="item">Item Sold:</label>
+                <input type="text" id="item" name="item" required>
+
+                <label for="quantity">Quantity:</label>
+                <input type="number" id="quantity" name="quantity" required>
+
+                <label for="amount">Total Amount (Rs):</label>
+                <input type="number" id="amount" name="amount" required>
+
+                <label for="description">Description:</label>
+                <input type="text" id="description" name="description">
+
+                <button type="submit" class="btn-primary">Record Sale</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Sales Records</h3>
+            <table>
+                <thead>
                     <tr>
-                        <th>Item</th>
+                        <th>ID</th>
+                        <th>Employee Name</th>
+                        <th>Item Sold</th>
                         <th>Quantity</th>
                         <th>Amount</th>
                         <th>Date</th>
                     </tr>
+                </thead>
+                <tbody>
                     {% for sale in sales %}
                     <tr>
-                        <td>{{ sale[2] }}</td>
-                        <td>{{ sale[3] }}</td>
-                        <td>Rs{{ sale[4] }}</td>
-                        <td>{{ sale[5] }}</td>
+                        <td>{{ sale.id }}</td>
+                        <td>{{ sale.name }}</td>
+                        <td>{{ sale.item_sold }}</td>
+                        <td>{{ sale.quantity }}</td>
+                        <td>{{ sale.amount }}</td>
+                        <td>{{ sale.date }}</td>
                     </tr>
                     {% endfor %}
-                </table>
-            </div>
-
-            <!-- Inventory Assigned Section -->
-            <div class="card" id="inventory">
-                <h3>Inventory Assigned</h3>
-                <table>
-                    <tr>
-                        <th>Item</th>
-                        <th>Quantity</th>
-                        <th>Status</th>
-                    </tr>
-                    {% for item in inventory %}
-                    <tr>
-                        <td>{{ item[1] }}</td>
-                        <td>{{ item[2] }}</td>
-                        <td>{{ item[5] }}</td>
-                    </tr>
-                    {% endfor %}
-                </table>
-            </div>
-
-            <!-- Dark Mode Toggle -->
-            <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
+                </tbody>
+            </table>
         </div>
+
+        <!-- Export Sales Data -->
+        <div class="card">
+            <h3>Export Sales Data</h3>
+            <a href="{{ url_for('export_sales_csv') }}"><button class="btn-primary">Export CSV</button></a>
+            <a href="{{ url_for('export_sales_pdf') }}"><button class="btn-primary">Export PDF</button></a>
+        </div>
+
+        <button id="dark-mode-toggle" class="toggle-btn">Toggle Dark Mode</button>
     </div>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
